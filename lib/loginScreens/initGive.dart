@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swipes/UI/ui.dart';
 
 class InitGivePage extends StatefulWidget {
   const InitGivePage({Key key}) : super(key: key);
@@ -9,6 +10,7 @@ class InitGivePage extends StatefulWidget {
 
 class _InitGivePageState extends State<InitGivePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   String _email;
   String _name;
   bool _autoValidate = false;
@@ -59,10 +61,7 @@ class _InitGivePageState extends State<InitGivePage> {
         new SizedBox(
           height: 10.0,
         ),
-        new RaisedButton(
-          onPressed: _validateInputs,
-          child: new Text('Validate'),
-        )
+        new BottomScreenButton(function: _validateInputs)
       ],
     );
   }
@@ -85,17 +84,17 @@ class _InitGivePageState extends State<InitGivePage> {
       return null;
   }
 
-  void _validateInputs() {
+  List <String> _validateInputs() {
     if (_formKey.currentState.validate()) {
 //    If all data are correct then save data to out variables
       _formKey.currentState.save();
-      print(_name);
-      print(_email);
+      return [_name, _email];
     } else {
 //    If all data are not valid then start auto validation.
       setState(() {
         _autoValidate = true;
       });
+      return null;
     }
   }
 }

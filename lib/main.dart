@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'loginScreens/initGive.dart';
 import 'authentication.dart';
 import 'root_page.dart';
 
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-        home: new RootPage(auth: new Auth()));
+        home: new InitGivePage());
+        // new RootPage(auth: new Auth()));
   
   }
 }
