@@ -8,28 +8,22 @@ class BottomScreenButton extends StatelessWidget {
   BottomScreenButton({this.function});
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      child: Text("Submit"),
-      onPressed: () async {
-        var userInfo = function();
-        if (userInfo != null) {
-          String userName = userInfo[0].toString();
-          String email = userInfo[1].toString();
+          String userName;
+          String email ;
           String verification;
-
           String username = 'uchicagoswipes@gmail.com';
           String password = 'Swipes123';
 
           final smtpServer = gmail(username, password);
 
-          String verificationCode() {
-            return randomAlphaNumeric(6);
-          }
 
-          Scaffold.of(context).showBottomSheet<void>(
-            (BuildContext context) {
-              return Container(
-                height: 500,
+  void _settingModalBottomSheet(context){
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc){
+        // TODO: Fix UI here
+          return Container(
+                height: MediaQuery.of(context).size.height * 0.5,
                 color: Colors.amber,
                 child: Center(
                   child: Column(
@@ -39,7 +33,6 @@ class BottomScreenButton extends StatelessWidget {
                       new Text(userName + ", is this your correct email?"),
                       // Email verification
                       new Text(email),
-                      // TODO: Make this button less obnoxious
                       RaisedButton(
                         child: const Text('Close BottomSheet'),
                         onPressed: () => Navigator.pop(context),
@@ -48,7 +41,7 @@ class BottomScreenButton extends StatelessWidget {
                         child: const Text('Send Confirmation Email'),
                         onPressed: () async {
                           (verification == null)
-                              ? verification = verificationCode()
+                              ? verification = randomAlphaNumeric(6)
                               : null;
                           // Create our email message.
                           final message = Message()
@@ -72,10 +65,26 @@ class BottomScreenButton extends StatelessWidget {
                   ),
                 ),
               );
-            },
-          );
+      }
+    );
+}
+
+
+
+    return RaisedButton(
+      child: Text("Submit"),
+      onPressed: () async {
+        var userInfo = function();
+        if (userInfo != null) {
+           userName = userInfo[0].toString();
+           email = userInfo[1].toString();
+          _settingModalBottomSheet(context);
         }
       },
     );
   }
+
+
+
+
 }

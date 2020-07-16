@@ -20,8 +20,10 @@ class _InitGivePageState extends State<InitGivePage> {
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(
-                alignment: Alignment.topCenter,
+                // alignment: Alignment.topCenter,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset('assets/images/email.png'),
                     Text(
