@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swipes/UI/ui.dart';
+import 'loginScreens.dart';
 
 class InitGivePage extends StatefulWidget {
   const InitGivePage({Key key}) : super(key: key);
@@ -22,22 +22,20 @@ class _InitGivePageState extends State<InitGivePage> {
             child: Container(
                 // alignment: Alignment.topCenter,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/email.png'),
-                    Text(
-                      "Please verify your UChicago email address",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    Container(
-                        margin: new EdgeInsets.all(15.0),
-                        child: new Form(
-                            key: _formKey,
-                            autovalidate: _autoValidate,
-                            child: FormUI())),
-                  ],
-                ))));
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset('assets/images/email.png'),
+        Text(
+          "Please verify your UChicago email address",
+          style: TextStyle(color: Colors.black),
+        ),
+        Container(
+            margin: new EdgeInsets.all(15.0),
+            child: new Form(
+                key: _formKey, autovalidate: _autoValidate, child: FormUI())),
+      ],
+    ))));
   }
 
 // Here is our Form UI
@@ -86,7 +84,7 @@ class _InitGivePageState extends State<InitGivePage> {
       return null;
   }
 
-  List <String> _validateInputs() {
+  List<String> _validateInputs() {
     if (_formKey.currentState.validate()) {
 //    If all data are correct then save data to out variables
       _formKey.currentState.save();

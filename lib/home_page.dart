@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'authentication.dart';
+import 'auth/authentication.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key, this.auth, this.userId, this.logoutCallback})
