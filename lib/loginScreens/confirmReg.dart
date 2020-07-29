@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:swipes/homePageGive.dart';
 
 // import '../authentication.dart';
 
@@ -37,6 +38,7 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
 
   @override
   void initState() {
+    print(widget.code);
     onTapRecognizer = TapGestureRecognizer()
       ..onTap = () {
         Navigator.pop(context);
@@ -66,16 +68,10 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
           width: MediaQuery.of(context).size.width,
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 30),
+              // SizedBox(height: 30),
               Container(
-                height: MediaQuery.of(context).size.height / 3,
-                child: FlareActor(
-                  "assets/otp.flr",
-                  animation: "otp",
-                  fit: BoxFit.fitHeight,
-                  alignment: Alignment.center,
-                ),
-              ),
+                  height: MediaQuery.of(context).size.height / 4,
+                  child: Text("Logo should go here")),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -132,20 +128,18 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
                       ),
                       animationDuration: Duration(milliseconds: 300),
                       backgroundColor: Colors.blue.shade50,
-                      enableActiveFill: true,
+                      enableActiveFill: false,
                       errorAnimationController: errorController,
                       controller: textEditingController,
                       onCompleted: (v) {
                         print("Completed");
                       },
                       onChanged: (value) {
-                        print(value);
                         setState(() {
                           currentText = value;
                         });
                       },
                       beforeTextPaste: (text) {
-                        print("Allowing to paste $text");
                         //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                         //but you can show anything you want here, like your pop up saying wrong paste format or etc
                         return true;
@@ -172,10 +166,10 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
                     style: TextStyle(color: Colors.black54, fontSize: 15),
                     children: [
                       TextSpan(
-                          text: " RESEND",
+                          text: " Go Back",
                           recognizer: onTapRecognizer,
                           style: TextStyle(
-                              color: Colors.green,
+                              color: Colors.red[300],
                               // Color(0xFF91D3B3),
                               fontWeight: FontWeight.bold,
                               fontSize: 16))
@@ -201,18 +195,14 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
                           hasError = true;
                         });
                       } else {
-                        setState(() async{
+                        setState(() async {
                           hasError = false;
-
-                          //remove
-                          // await widget.auth.signUp(widget.email, "");
-
-                          // print('Signed up user: ${widget.email}');
-
-                          scaffoldKey.currentState.showSnackBar(SnackBar(
-                            content: Text("Aye!!"),
-                            duration: Duration(seconds: 2),
-                          ));
+                          //Take the user to the home page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePageGive()),
+                          );
                         });
                       }
                     },

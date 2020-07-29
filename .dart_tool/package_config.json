@@ -104,6 +104,12 @@
       "languageVersion": "2.9"
     },
     {
+      "name": "flutter_calendar_carousel",
+      "rootUri": "file:///Users/matthiasling/.pub-cache/hosted/pub.dartlang.org/flutter_calendar_carousel-1.4.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/matthiasling/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -266,7 +272,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-07-19T03:58:59.128566Z",
+  "generated": "2020-07-29T03:11:58.507324Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-21.0.dev.flutter-06183779d7"
 }

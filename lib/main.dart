@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'homePageGive.dart';
 import 'loginScreens/initGive.dart';
 import 'auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,8 +16,9 @@ class MyApp extends StatelessWidget {
         theme: new ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: 
-        // new InitGivePage());
-    new RootPage(auth: new Auth()));
+        home:  
+        //// new InitGivePage()); Outdated I think
+    // new RootPage(auth: new Auth())); In use now
+    new HomePageGive());
   }
 }
