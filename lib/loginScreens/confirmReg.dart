@@ -1,21 +1,20 @@
 import 'dart:async';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:swipes/homePageGive.dart';
-
-// import '../authentication.dart';
+import 'package:swipes/homePageGive/homePageGive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfirmRegPage extends StatefulWidget {
   final String code;
   final String email;
+  final String username;
 
   //remove if necessary
   // final BaseAuth auth;
   // final VoidCallback loginCallback;
 
-  ConfirmRegPage(this.code, this.email);
+  ConfirmRegPage(this.code, this.email, this.username);
 
   // ConfirmRegPage(this.code, this.email, this.auth, this.loginCallback);
 
@@ -36,6 +35,20 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
+  Future<void> saveUsername(String name) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      prefs.setString("username", name).then((bool success) {
+        hasError = false;
+        saveUsername(widget.username).then((value) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePageGive()),
+            ));
+      });
+    });
+  }
+
   @override
   void initState() {
     print(widget.code);
@@ -50,7 +63,6 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
   @override
   void dispose() {
     errorController.close();
-
     super.dispose();
   }
 
@@ -186,6 +198,7 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
                   child: FlatButton(
                     onPressed: () {
                       formKey.currentState.validate();
+
                       // conditions for validating
                       if (currentText.length != 6 ||
                           currentText != widget.code) {
@@ -195,15 +208,8 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
                           hasError = true;
                         });
                       } else {
-                        setState(() async {
-                          hasError = false;
-                          //Take the user to the home page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePageGive()),
-                          );
-                        });
+                        //update shared prefs
+                        saveUsername(widget.username);
                       }
                     },
                     child: Center(

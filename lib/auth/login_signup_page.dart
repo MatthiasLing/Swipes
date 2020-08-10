@@ -5,6 +5,7 @@ import 'package:mailer/smtp_server.dart';
 import 'package:random_string/random_string.dart';
 import 'package:swipes/loginScreens/loginScreens.dart';
 
+
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
   String verification;
@@ -252,7 +253,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
       Navigator.push(context,
                             MaterialPageRoute(builder: (context) => 
-                            ConfirmRegPage(widget.verification, _email)),
+                            ConfirmRegPage(widget.verification, _email, name)),
                         );
     }
   }

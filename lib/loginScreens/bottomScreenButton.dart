@@ -66,7 +66,7 @@ class BottomScreenButton extends StatelessWidget {
                                 //   auth: widget.auth,
                                 //   loginCallback: loginCallback,
                                 // );
-                            ConfirmRegPage(verification, email)),
+                            ConfirmRegPage(verification, email, userName)),
                         );
                       },
                     )

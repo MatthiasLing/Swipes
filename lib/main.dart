@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'homePageGive.dart';
+import 'homePageGive/homePageGive.dart';
 import 'loginScreens/initGive.dart';
 import 'auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'engine/engine.dart';
 
 // import 'loginScreens/loginScreens.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -16,9 +21,10 @@ class MyApp extends StatelessWidget {
         theme: new ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:  
-        //// new InitGivePage()); Outdated I think
-    // new RootPage(auth: new Auth())); In use now
-    new HomePageGive());
+        home:
+            //// new InitGivePage()); Outdated I think
+             //new RootPage(auth: new Auth())); //In use now
+            //new HomePageGive());
+    new MonthView());
   }
 }
