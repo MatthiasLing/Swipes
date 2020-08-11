@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 
 class GiveDayView extends StatefulWidget {
-  List<Event> eventList;
-  GiveDayView(this.eventList);
+  final DateTime today;
+  GiveDayView(this.today);
 
   @override
   _GiveDayViewState createState() => _GiveDayViewState();
@@ -15,9 +17,6 @@ class _GiveDayViewState extends State<GiveDayView> {
   List<Event> events = [];
   @override
   void initState() {
-    widget.eventList.sort((a, b) => a.date.compareTo(b.date));
-    print(widget.eventList);
-    print("done");
     super.initState();
   }
 
@@ -29,13 +28,43 @@ class _GiveDayViewState extends State<GiveDayView> {
             child: Container(
           color: Colors.green[100],
           height: 500,
-          child: widget.eventList.length == 0
-              ? Text("No events")
-              : ListView.builder(
-                  itemCount: widget.eventList.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return new Text(widget.eventList[index].date.toString());
-                  }),
+          child: new StreamBuilder(
+              stream: Firestore.instance.collection('requests').snapshots(),
+              initialData: Text("initial Data"),
+              builder: (context, snapshot) {
+                List<Event> lst = [];
+
+                if (!snapshot.hasData) {
+                  return Text("Loading");
+                } else {
+                  //TODO: Fix streambuilder error
+                  if (snapshot.hasData) {
+                    for (int i = 0; i < snapshot.data.documents.length; ++i) {
+                      DateTime date =
+                          snapshot.data.documents[i].data["timeStart"].toDate();
+                      if (date.day == widget.today.day) {
+                        lst.add(Event(
+                          date: date,
+                          title: snapshot.data.documents[i].documentID,
+                        ));
+                      }
+                    }
+                    lst = lst.toSet().toList();
+                    if (lst.length > 0) {
+                      return ListView.builder(
+                          itemCount: lst.length,
+                          itemBuilder: (BuildContext ctxt, int index) {
+                            return new Text(lst[index].title +
+                                " " +
+                                lst[index].date.toString());
+                          });
+                    }
+                    return Center(
+                      child: Text("No requests today"),
+                    );
+                  }
+                }
+              }),
         ))
       ],
     ));
