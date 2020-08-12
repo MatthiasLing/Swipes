@@ -219,8 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
       markedDateIconBuilder: (event) {
         return event.icon;
       },
-      markedDateMoreShowTotal:
-          true,
+      markedDateMoreShowTotal: true,
       todayButtonColor: Colors.yellow,
       selectedDayTextStyle: TextStyle(
         color: Colors.yellow,
@@ -246,69 +245,70 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
 
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(widget.title),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              //custom icon
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarousel,
-              ), // This trailing comma makes auto-formatting nicer for build methods.
-              //custom icon without header
-              Container(
-                margin: EdgeInsets.only(
-                  top: 30.0,
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                child: new Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Text(
-                      _currentMonth,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      ),
-                    )),
-                    FlatButton(
-                      child: Text('PREV'),
-                      onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month - 1);
-                          _currentMonth =
-                              DateFormat.yMMM().format(_targetDateTime);
-                        });
-                      },
-                    ),
-                    FlatButton(
-                      child: Text('NEXT'),
-                      onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month + 1);
-                          _currentMonth =
-                              DateFormat.yMMM().format(_targetDateTime);
-                        });
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarouselNoHeader,
-              ),
-            ],
-          ),
-        ));
+    return new Text("TEst");
+    // Scaffold(
+    //     appBar: new AppBar(
+    //       title: new Text(widget.title),
+    //     ),
+    //     body: SingleChildScrollView(
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         mainAxisAlignment: MainAxisAlignment.start,
+    //         children: <Widget>[
+    //           //custom icon
+    //           Container(
+    //             margin: EdgeInsets.symmetric(horizontal: 16.0),
+    //             child: _calendarCarousel,
+    //           ), // This trailing comma makes auto-formatting nicer for build methods.
+    //           //custom icon without header
+    //           Container(
+    //             margin: EdgeInsets.only(
+    //               top: 30.0,
+    //               bottom: 16.0,
+    //               left: 16.0,
+    //               right: 16.0,
+    //             ),
+    //             child: new Row(
+    //               children: <Widget>[
+    //                 Expanded(
+    //                     child: Text(
+    //                   _currentMonth,
+    //                   style: TextStyle(
+    //                     fontWeight: FontWeight.bold,
+    //                     fontSize: 24.0,
+    //                   ),
+    //                 )),
+    //                 FlatButton(
+    //                   child: Text('PREV'),
+    //                   onPressed: () {
+    //                     setState(() {
+    //                       _targetDateTime = DateTime(
+    //                           _targetDateTime.year, _targetDateTime.month - 1);
+    //                       _currentMonth =
+    //                           DateFormat.yMMM().format(_targetDateTime);
+    //                     });
+    //                   },
+    //                 ),
+    //                 FlatButton(
+    //                   child: Text('NEXT'),
+    //                   onPressed: () {
+    //                     setState(() {
+    //                       _targetDateTime = DateTime(
+    //                           _targetDateTime.year, _targetDateTime.month + 1);
+    //                       _currentMonth =
+    //                           DateFormat.yMMM().format(_targetDateTime);
+    //                     });
+    //                   },
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //           Container(
+    //             margin: EdgeInsets.symmetric(horizontal: 16.0),
+    //             child: _calendarCarouselNoHeader,
+    //           ),
+    //         ],
+    //       ),
+    //     ));
   }
 }

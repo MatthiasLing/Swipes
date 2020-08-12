@@ -132,14 +132,23 @@ class _MonthViewState extends State<MonthView> {
       onDayPressed: (DateTime date, List<Event> events) {
         // this.setState(() => _currentDate2 = date);
         print(date.month.toString() + "/" + date.day.toString());
-        if (date.month == _targetDateTime.month) {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                print("opening giveDayView: " + date.toString());
-                return GiveDayView(date);
-              });
-        }
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.75,
+            decoration: new BoxDecoration(
+              color: Colors.white,
+              borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(25.0),
+                topRight: const Radius.circular(25.0),
+              ),
+            ),
+            child: Center(child: GiveDayView(date)),
+          ),
+        );
+        //}
         //brings up the interface
       },
       daysHaveCircularBorder: true,
@@ -263,7 +272,9 @@ class _MonthViewState extends State<MonthView> {
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: StreamBuilder(
+                // TODO: fix the no such method error by defining stream type
+                // Do for other streams as well
+                child: StreamBuilder<dynamic>(
                     stream:
                         Firestore.instance.collection('requests').snapshots(),
                     initialData: _calendarCarouselNoHeader,
@@ -294,18 +305,15 @@ class _MonthViewState extends State<MonthView> {
 
                               //TODO: instantly update map with added event
                               _markedDateMap.add(
-                                      new DateTime(
-                                          date.year, date.month, date.day),
-                                      event);
+                                  new DateTime(date.year, date.month, date.day),
+                                  event);
                             }
 
                             print(
                                 "ID: " + snapshot.data.documents[i].documentID);
-
                           }
                           return _calendarCarouselNoHeader;
                         } else {
-                          print("uh oh ");
                           return Text('Pease Wait');
                         }
                       }

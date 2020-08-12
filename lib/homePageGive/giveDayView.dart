@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:intl/intl.dart';
+import 'dart:math';
+import 'package:flutter_week_view/flutter_week_view.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:flutter_week_view/flutter_week_view.dart';
 
 class GiveDayView extends StatefulWidget {
   final DateTime today;
@@ -23,12 +27,20 @@ class _GiveDayViewState extends State<GiveDayView> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // Container(
+        //   padding: EdgeInsets.all(10),
+        //   alignment: Alignment.center,
+        //   width: MediaQuery.of(context).size.width,
+        //   child: Text(new DateFormat.MMMMd('en_US').format(widget.today)),
+        //   color: Colors.green[100],
+        // ),
         Expanded(
             child: Container(
           color: Colors.green[100],
           height: 500,
-          child: new StreamBuilder(
+          child: new StreamBuilder<dynamic>(
               stream: Firestore.instance.collection('requests').snapshots(),
               initialData: Text("initial Data"),
               builder: (context, snapshot) {
@@ -37,12 +49,12 @@ class _GiveDayViewState extends State<GiveDayView> {
                 if (!snapshot.hasData) {
                   return Text("Loading");
                 } else {
-                  //TODO: Fix streambuilder error
                   if (snapshot.hasData) {
                     for (int i = 0; i < snapshot.data.documents.length; ++i) {
                       DateTime date =
                           snapshot.data.documents[i].data["timeStart"].toDate();
-                      if (date.day == widget.today.day) {
+                      if (date.day == widget.today.day &&
+                          date.month == widget.today.month) {
                         lst.add(Event(
                           date: date,
                           title: snapshot.data.documents[i].documentID,
@@ -50,19 +62,44 @@ class _GiveDayViewState extends State<GiveDayView> {
                       }
                     }
                     lst = lst.toSet().toList();
-                    if (lst.length > 0) {
-                      return ListView.builder(
-                          itemCount: lst.length,
-                          itemBuilder: (BuildContext ctxt, int index) {
-                            return new Text(lst[index].title +
-                                " " +
-                                lst[index].date.toString());
-                          });
+                    List<FlutterWeekViewEvent> lst2 = [];
+
+                    Random rnd = new Random();
+                    int min = 0;
+                    int max = 255;
+
+                    for (int i = 0; i < lst.length; i++) {
+                      lst2.add(new FlutterWeekViewEvent(
+                          backgroundColor: Color.fromRGBO(min + rnd.nextInt(max - min) , 
+                            min + rnd.nextInt(max - min), min + rnd.nextInt(max - min), 0.5),
+                          title: lst[i].title,
+                          description: "",
+                          start: lst[i].date,
+                          end: lst[i].date.add(new Duration(minutes: 30)),
+                          onTap: () {
+                            print(lst[i].title);
+                          }));
                     }
-                    return Center(
+
+                    //turn lst into the list of other events
+                    if (lst.length > 0) {
+                      return DayView(
+                        dayBarStyle: DayBarStyle(
+                            dateFormatter: (year, month, day) {
+                              return DateFormat.MMMd('en_US')
+                                  .format(DateTime(year, month, day))
+                                  .toString();
+                            },
+                            textAlignment: Alignment.center),
+                        date: widget.today,
+                        events: lst2,
+                      );
+                    }
+                    
+                  }
+                  return Center(
                       child: Text("No requests today"),
                     );
-                  }
                 }
               }),
         ))

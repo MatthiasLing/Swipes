@@ -43,7 +43,7 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
         hasError = false;
         saveUsername(widget.username).then((value) => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomePageGive()),
+              MaterialPageRoute(builder: (context) => MonthView()),
             ));
       });
     });
