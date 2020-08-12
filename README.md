@@ -1,6 +1,3 @@
 # swipes
 
-Todo:
-    - don't send verification for existing acct
-    
-samples, guidance on mobile development, and a full API reference.
+A meal swipe sharing app for UChicago students looking to help fight food insecurity in Hyde Park
