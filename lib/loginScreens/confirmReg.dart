@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:swipes/homePageGive/homePageGive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../auth/authentication.dart';
 
 class ConfirmRegPage extends StatefulWidget {
   final String code;
@@ -14,7 +16,10 @@ class ConfirmRegPage extends StatefulWidget {
   // final BaseAuth auth;
   // final VoidCallback loginCallback;
 
-  ConfirmRegPage(this.code, this.email, this.username);
+  final BaseAuth auth;
+  final String password;
+  ConfirmRegPage(
+      this.auth, this.code, this.email, this.username, this.password);
 
   // ConfirmRegPage(this.code, this.email, this.auth, this.loginCallback);
 
@@ -34,17 +39,40 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  final databaseReference = Firestore.instance;
+  String userID;
 
-  Future<void> saveUsername(String name) async {
+  Future<String> initID() async {
+    String id =
+        await widget.auth.signUp(widget.email, widget.password).then((value) {
+      return value;
+    });
+    return id;
+  }
+
+  void createRecord(String name) async {
+    userID = await initID();
+    await databaseReference.collection("users").add({
+      'email': widget.email,
+      'name': name,
+      'interactions': [],
+      'ID': userID,
+    });
+    saveUser(name, userID);
+  }
+
+  Future<void> saveUser(String name, String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
       prefs.setString("username", name).then((bool success) {
-        hasError = false;
-        saveUsername(widget.username).then((value) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MonthView()),
-            ));
+        prefs.setString("userID", id).then((bool success) {
+          hasError = false;
+          saveUser(widget.username, id).then((value) => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MonthView()),
+              ));
+        });
       });
     });
   }
@@ -52,6 +80,7 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
   @override
   void initState() {
     print(widget.code);
+
     onTapRecognizer = TapGestureRecognizer()
       ..onTap = () {
         Navigator.pop(context);
@@ -209,7 +238,9 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
                         });
                       } else {
                         //update shared prefs
-                        saveUsername(widget.username);
+                        createRecord(widget.username);
+
+                        // saveUsername(widget.username);
                       }
                     },
                     child: Center(

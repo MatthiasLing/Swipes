@@ -9,6 +9,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../engine/engine.dart';
 import 'giveDayView.dart';
+import 'giveButton.dart';
 
 //TODO: make it so that monthtable incorporates the prev and next months
 class MonthView extends StatefulWidget {
@@ -228,7 +229,7 @@ class _MonthViewState extends State<MonthView> {
               //custom icon without header
               Container(
                 margin: EdgeInsets.only(
-                  top: 30.0,
+                  top: 16.0,
                   bottom: 16.0,
                   left: 16.0,
                   right: 16.0,
@@ -274,51 +275,41 @@ class _MonthViewState extends State<MonthView> {
                 margin: EdgeInsets.symmetric(horizontal: 16.0),
                 // TODO: fix the no such method error by defining stream type
                 // Do for other streams as well
-                child: StreamBuilder<dynamic>(
+                child: StreamBuilder(
                     stream:
                         Firestore.instance.collection('requests').snapshots(),
-                    initialData: _calendarCarouselNoHeader,
+                    //_calendarCarouselNoHeader,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Text("Loading");
+                        return _calendarCarouselNoHeader;
                       } else {
-                        //TODO: Fix streambuilder error
                         if (snapshot.hasData) {
-                          for (int i = 0;
-                              i < snapshot.data.documents.length;
-                              ++i) {
-                            DateTime date;
+                          List lst = snapshot.data.documents
+                              .map((doc) => new Event(
+                                  date: new DateTime(
+                                      doc["timeStart"].toDate().year,
+                                      doc["timeStart"].toDate().month,
+                                      doc["timeStart"].toDate().day),
+                                  dot: dot,
+                                  title: doc.documentID))
+                              .toList();
 
-                            date = snapshot.data.documents[i].data["timeStart"]
-                                .toDate();
-                            //TODO: adding to monthtable multiple times
-                            Event event;
-                            if (date.month == _targetDateTime.month &&
-                                date.day >= _targetDateTime.day) {
-                              event = Event(
-                                date: new DateTime(
-                                    date.year, date.month, date.day),
-                                title: snapshot.data.documents[i].documentID,
-                                dot: dot,
-                                //icon: _eventIcon(date.day.toString()),
-                              );
+                          for (int i = 0; i < lst.length; ++i) {
 
-                              //TODO: instantly update map with added event
-                              _markedDateMap.add(
-                                  new DateTime(date.year, date.month, date.day),
-                                  event);
-                            }
-
-                            print(
-                                "ID: " + snapshot.data.documents[i].documentID);
+                            DateTime date = lst[i].date;
+                            _markedDateMap.add(
+                                new DateTime(date.year, date.month, date.day),
+                                lst[i]);
                           }
-                          return _calendarCarouselNoHeader;
-                        } else {
-                          return Text('Pease Wait');
+
+                          // print(
+                          //     "ID: " + snapshot.data.documents[i].documentID);
                         }
+                        return _calendarCarouselNoHeader;
                       }
                     }),
               ),
+              // GiveButton(),
               RaisedButton(
                 child: Text('Create Record'),
                 onPressed: () {

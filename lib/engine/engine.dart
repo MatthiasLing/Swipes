@@ -10,6 +10,12 @@ Future<String> getUsername() async {
   return stringValue;
 }
 
+Future<String> getUserID() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String stringValue = prefs.getString('userID');
+  return stringValue;
+}
 Future<void> setNameTest() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('username', 'Matthias');

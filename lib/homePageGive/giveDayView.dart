@@ -42,7 +42,6 @@ class _GiveDayViewState extends State<GiveDayView> {
           height: 500,
           child: new StreamBuilder<dynamic>(
               stream: Firestore.instance.collection('requests').snapshots(),
-              initialData: Text("initial Data"),
               builder: (context, snapshot) {
                 List<Event> lst = [];
 
@@ -61,6 +60,9 @@ class _GiveDayViewState extends State<GiveDayView> {
                         ));
                       }
                     }
+
+               
+
                     lst = lst.toSet().toList();
                     List<FlutterWeekViewEvent> lst2 = [];
 
@@ -70,8 +72,11 @@ class _GiveDayViewState extends State<GiveDayView> {
 
                     for (int i = 0; i < lst.length; i++) {
                       lst2.add(new FlutterWeekViewEvent(
-                          backgroundColor: Color.fromRGBO(min + rnd.nextInt(max - min) , 
-                            min + rnd.nextInt(max - min), min + rnd.nextInt(max - min), 0.5),
+                          backgroundColor: Color.fromRGBO(
+                              min + rnd.nextInt(max - min),
+                              min + rnd.nextInt(max - min),
+                              min + rnd.nextInt(max - min),
+                              0.5),
                           title: lst[i].title,
                           description: "",
                           start: lst[i].date,
@@ -95,11 +100,10 @@ class _GiveDayViewState extends State<GiveDayView> {
                         events: lst2,
                       );
                     }
-                    
                   }
                   return Center(
-                      child: Text("No requests today"),
-                    );
+                    child: Text("No requests today"),
+                  );
                 }
               }),
         ))

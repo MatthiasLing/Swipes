@@ -212,7 +212,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         } else {
           _password = pw1;
 
-          userId = await widget.auth.signUp(_email, _password);
+          //userId = await widget.auth.signUp(_email, _password);
 
           (widget.verification == null)
               ? widget.verification = randomAlphaNumeric(6)
@@ -233,7 +233,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           }
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
-          print('Signed up user: $userId');
+          //print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;
@@ -253,7 +253,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
       Navigator.push(context,
                             MaterialPageRoute(builder: (context) => 
-                            ConfirmRegPage(widget.verification, _email, name)),
+                            ConfirmRegPage(widget.auth,widget.verification, _email, name, _password)),
                         );
     }
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'homePageGive/homePageGive.dart';
-import 'loginScreens/initGive.dart';
 import 'auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +25,8 @@ class MyApp extends StatelessWidget {
         ),
         home:
             //// new InitGivePage()); Outdated I think
-             //new RootPage(auth: new Auth())); //In use now
+            ///
+            //new RootPage(auth: new Auth())); //In use now
             //new HomePageGive());
     new MonthView());
   }
