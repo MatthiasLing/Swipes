@@ -252,6 +252,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       }
 
       Navigator.push(context,
+      //TODO: catch signed in already error
                             MaterialPageRoute(builder: (context) => 
                             ConfirmRegPage(widget.auth,widget.verification, _email, name, _password)),
                         );

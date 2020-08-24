@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../engine/engine.dart';
 import 'giveDayView.dart';
 import 'giveButton.dart';
+import 'package:flutter/cupertino.dart';
 
 //TODO: make it so that monthtable incorporates the prev and next months
 class MonthView extends StatefulWidget {
@@ -24,6 +25,8 @@ class _MonthViewState extends State<MonthView> {
   DateTime _currentDate2 = DateTime.now();
   String _currentMonth = DateFormat.yMMM().format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
+
+  bool swiper = true;
   // List<List<Event>> monthTable = new List(32);
 
   static Widget _eventIcon(String day) => new Container(
@@ -95,26 +98,41 @@ class _MonthViewState extends State<MonthView> {
   int num = 1;
   final databaseReference = Firestore.instance;
 
-  void createRecord() async {
+  void createDonation() async {
     num++;
-    DocumentReference ref = await databaseReference.collection("requests").add({
-      'location': 'Any',
+    DocumentReference ref =
+        await databaseReference.collection("donations").add({
+      'location': 'Bartlett',
       'timeEnd': DateTime(2020, 9, num),
       'timeStart': DateTime(2020, 9, num),
       'type': "give",
-      'user': "matthiasling"
+      'user': "matthiasling",
+      'note': 'some basic information regarding the event'
     });
     print(ref.documentID);
   }
 
+  void populateRequests() async {
+    await getUsername().then((value) async {
+      for (int num = 1; num < 20; num++) {
+        DocumentReference ref =
+            await databaseReference.collection("requests").add({
+          'timeEnd': DateTime(2020, 9, num),
+          'timeStart': DateTime(2020, 9, num),
+          'user': value,
+          'email': "temp",
+        });
+        print(ref.documentID);
+      }
+    });
+  }
+
   void deleteAll() async {
     databaseReference.collection('requests').getDocuments().then((snapshot) {
-      int day;
-      String id;
       for (DocumentSnapshot ds in snapshot.documents) {
-        DateTime date = ds.data["timeStart"].toDate();
-        day = date.day;
-        id = ds.documentID;
+        // DateTime date = ds.data["timeStart"].toDate();
+        // int day = date.day;
+        // String id = ds.documentID;
         ds.reference.delete();
       }
       setState(() {
@@ -128,6 +146,7 @@ class _MonthViewState extends State<MonthView> {
   @override
   Widget build(BuildContext context) {
     /// Example Calendar Carousel without header and custom prev & next button
+
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       todayBorderColor: Colors.green,
       onDayPressed: (DateTime date, List<Event> events) {
@@ -208,14 +227,13 @@ class _MonthViewState extends State<MonthView> {
 
     return new Scaffold(
         appBar: new AppBar(
-          //This is the ovr title huh
           title: new FutureBuilder<String>(
             future: getUsername(),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               if (snapshot.hasData) {
                 return Text('Welcome, ' + snapshot.data);
               } else {
-                return CircularProgressIndicator();
+                return Text("Welcome");
               }
             },
           ),
@@ -230,7 +248,7 @@ class _MonthViewState extends State<MonthView> {
               Container(
                 margin: EdgeInsets.only(
                   top: 16.0,
-                  bottom: 16.0,
+                  // bottom: 16.0,
                   left: 16.0,
                   right: 16.0,
                 ),
@@ -295,7 +313,6 @@ class _MonthViewState extends State<MonthView> {
                               .toList();
 
                           for (int i = 0; i < lst.length; ++i) {
-
                             DateTime date = lst[i].date;
                             _markedDateMap.add(
                                 new DateTime(date.year, date.month, date.day),
@@ -309,12 +326,53 @@ class _MonthViewState extends State<MonthView> {
                       }
                     }),
               ),
-              // GiveButton(),
+
+              new FutureBuilder<bool>(
+                future: getSwiper(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if (snapshot.hasData) {
+                    swiper = snapshot.data;
+                    return Switch(
+                      value: swiper,
+                      onChanged: (value) {
+                        setState(() {
+                          swiper = !swiper;
+                          setSwiper(swiper);
+                        });
+                        print(swiper);
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    );
+                  } else {
+                    return Switch(
+                      value: swiper,
+                      onChanged: (value) {
+                        setState(() {
+                          swiper = !swiper;
+                          setSwiper(swiper);
+                        });
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    );
+                  }
+                },
+              ),
+
+              RaisedButton(
+                child: Text('Populate data'),
+                onPressed: () {
+                  setState(() {
+                    populateRequests();
+                  });
+                },
+              ),
               RaisedButton(
                 child: Text('Create Record'),
                 onPressed: () {
                   setState(() {
-                    createRecord();
+                    createDonation();
                   });
                 },
               ),

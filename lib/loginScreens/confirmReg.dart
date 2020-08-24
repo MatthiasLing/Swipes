@@ -65,13 +65,15 @@ class _ConfirmRegPageState extends State<ConfirmRegPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      prefs.setString("username", name).then((bool success) {
-        prefs.setString("userID", id).then((bool success) {
-          hasError = false;
-          saveUser(widget.username, id).then((value) => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MonthView()),
-              ));
+      prefs.setBool("swiper", true).then((bool success) {
+        prefs.setString("username", name).then((bool success) {
+          prefs.setString("userID", id).then((bool success) {
+            hasError = false;
+            saveUser(widget.username, id).then((value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MonthView()),
+                ));
+          });
         });
       });
     });

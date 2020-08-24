@@ -29,13 +29,6 @@ class _GiveDayViewState extends State<GiveDayView> {
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Container(
-        //   padding: EdgeInsets.all(10),
-        //   alignment: Alignment.center,
-        //   width: MediaQuery.of(context).size.width,
-        //   child: Text(new DateFormat.MMMMd('en_US').format(widget.today)),
-        //   color: Colors.green[100],
-        // ),
         Expanded(
             child: Container(
           color: Colors.green[100],
@@ -61,8 +54,6 @@ class _GiveDayViewState extends State<GiveDayView> {
                       }
                     }
 
-               
-
                     lst = lst.toSet().toList();
                     List<FlutterWeekViewEvent> lst2 = [];
 
@@ -82,13 +73,17 @@ class _GiveDayViewState extends State<GiveDayView> {
                           start: lst[i].date,
                           end: lst[i].date.add(new Duration(minutes: 30)),
                           onTap: () {
+                            //Open the dialogue here
                             print(lst[i].title);
                           }));
-                    }
+                    }  
 
                     //turn lst into the list of other events
                     if (lst.length > 0) {
                       return DayView(
+                        onHoursColumnTappedDown: (dateTime) {
+                          print(dateTime);
+                        },
                         dayBarStyle: DayBarStyle(
                             dateFormatter: (year, month, day) {
                               return DateFormat.MMMd('en_US')

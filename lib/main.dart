@@ -4,7 +4,6 @@ import 'auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'engine/engine.dart';
-
 //Testing:
 import 'package:flutter_week_view/flutter_week_view.dart';
 
@@ -15,7 +14,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -28,6 +26,7 @@ class MyApp extends StatelessWidget {
             ///
             //new RootPage(auth: new Auth())); //In use now
             //new HomePageGive());
-    new MonthView());
+            new MonthView());
+
   }
 }
